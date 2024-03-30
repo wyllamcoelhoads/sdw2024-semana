@@ -1,29 +1,34 @@
 package me.dio.sdw24.adapters.in;
 
 import me.dio.sdw24.domain.exeption.ChampionNotFoundException;
-import org.springframework.http.HttpStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.*;
 import javax.xml.parsers.SAXParser;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(ChampionNotFoundException.class)
-    public ApiError handleDomainException(ChampionNotFoundException domainError){
-        return new ApiError(domainError.getMessage());
+    public ResponseEntity<ApiError> handleDomainException(ChampionNotFoundException domainError) {
+        return ResponseEntity
+                .unprocessableEntity()
+                .body(new ApiError(domainError.getMessage()));
     }
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public ApiError handleDomainException(Exception domainError){
-        return new ApiError("Ops! Ocorreu um erro inesperado!");
+    public ResponseEntity<ApiError> handleDomainException(Exception unexpectedError) {
+        String message = "Ops! Ocorreu um erro inesperado!";
+        logger.error(message, unexpectedError);
+        return ResponseEntity
+                .internalServerError()
+                .body(new ApiError(message));
     }
-
     public record ApiError(String message){
 
     }
