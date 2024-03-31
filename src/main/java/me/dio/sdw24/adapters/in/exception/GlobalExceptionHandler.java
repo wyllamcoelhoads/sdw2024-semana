@@ -1,4 +1,4 @@
-package me.dio.sdw24.adapters.in;
+package me.dio.sdw24.adapters.in.exception;
 
 import me.dio.sdw24.domain.exeption.ChampionNotFoundException;
 import org.slf4j.Logger;
@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.swing.*;
-import javax.xml.parsers.SAXParser;
+
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
