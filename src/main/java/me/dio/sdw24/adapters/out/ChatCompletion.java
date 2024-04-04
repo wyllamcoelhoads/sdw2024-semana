@@ -3,6 +3,7 @@ package me.dio.sdw24.adapters.out;
 import feign.RequestInterceptor;
 import me.dio.sdw24.domain.ports.GeneraTiveAiApi;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +13,7 @@ import java.util.List;
 
 /*Ele definiu o titulo da classe dele de OpenAiChatApi eu define como ChatCompletion igual o sugerido no link
 *  https://platform.openai.com/docs/api-reference/chat/create*/
+@ConditionalOnProperty(name = "generative-ai.provider", havingValue = "OPENAI", matchIfMissing = true)
 @FeignClient(name = "chatCompletion", url = "${openai.base-url}", configuration = ChatCompletion.Config.class)
 public interface ChatCompletion extends GeneraTiveAiApi {
     @PostMapping("/v1/chat/completions")
